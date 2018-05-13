@@ -32,8 +32,8 @@ public class ParticipantRestController {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
 	         return new ResponseEntity(HttpStatus.NOT_FOUND);
-	     }
-	     return new ResponseEntity<Participant>(participant, HttpStatus.OK);
+	    }
+	    return new ResponseEntity<Participant>(participant, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -48,6 +48,16 @@ public class ParticipantRestController {
 		participantService.create(participant);
 		// zwrocic
 		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteParticipant(@PathVariable("id") String login) {
+		Participant participant = participantService.findByLogin(login);
+		if (participant == null) {
+	         return new ResponseEntity(HttpStatus.NOT_FOUND);
+	    }
+		participantService.delete(participant);
+	    return new ResponseEntity<Participant>(participant, HttpStatus.OK);
 	}
 
 }

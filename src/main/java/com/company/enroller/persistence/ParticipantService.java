@@ -25,9 +25,14 @@ public class ParticipantService {
 	}
 
 	public void create(Participant participant) {
-		// TODO Auto-generated method stub
 		Transaction transaction = connector.getSession().beginTransaction();
 		connector.getSession().save(participant);
+		transaction.commit();
+	}
+
+	public void delete(Participant participant) {
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().delete(participant);
 		transaction.commit();
 	}
 
