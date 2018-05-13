@@ -18,5 +18,9 @@ public class ParticipantService {
 	public Collection<Participant> getAll() {
 		return connector.getSession().createCriteria(Participant.class).list();
 	}
+	
+	public Participant findByLogin(String login) {
+		return (Participant) connector.getSession().get(Participant.class, login);
+	}
 
 }
