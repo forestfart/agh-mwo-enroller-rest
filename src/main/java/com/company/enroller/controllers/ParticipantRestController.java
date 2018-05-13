@@ -38,10 +38,16 @@ public class ParticipantRestController {
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<?> registerParticipant(@RequestBody Participant participant) {
-			// sprtawdzic czy istnieje
-			// zapisac
-			// zwrocic
-		return null;
+		// sprtawdzic czy istnieje
+		if (participantService.findByLogin(participant.getLogin()) != null) {
+			return new ResponseEntity(
+				"Unable to create. A participant with login " + participant.getLogin() + " already exists.",
+				HttpStatus.CONFLICT);
+			}
+		// zapisac
+		participantService.create(participant);
+		// zwrocic
+		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
 	}
 
 }
