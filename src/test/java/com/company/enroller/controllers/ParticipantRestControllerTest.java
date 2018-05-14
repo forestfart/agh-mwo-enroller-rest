@@ -39,8 +39,8 @@ public class ParticipantRestControllerTest {
 	@Test
 	public void getParticipants() throws Exception {
 		Participant participant = new Participant();
-		participant.setLogin("testlogin");
-		participant.setPassword("testpassword");
+		participant.setLogin("testLogin");
+		participant.setPassword("testPassword");
 
 		Collection<Participant> allParticipants = singletonList(participant);
 		given(participantService.getAll()).willReturn(allParticipants);
@@ -49,4 +49,15 @@ public class ParticipantRestControllerTest {
 				.andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].login", is(participant.getLogin())));
 	}
 
+	@Test
+	public void getParticipant() throws Exception {
+		Participant participant = new Participant();
+		participant.setLogin("testLogin");
+		participant.setPassword("testPassword");
+
+		given(participantService.findByLogin(participant.getLogin())).willReturn(participant);
+
+		mvc.perform(get("/participants/testLogin").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.login", is(participant.getLogin()))).andExpect(jsonPath("$.password", is(participant.getPassword())));
+	}
 }
