@@ -60,4 +60,20 @@ public class ParticipantRestController {
 	    return new ResponseEntity<Participant>(participant, HttpStatus.OK);
 	}
 
+
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateParticipantPassword(@RequestBody Participant jsonParticipant) {
+		// sprtawdzic czy istnieje
+		if (participantService.findByLogin(jsonParticipant.getLogin()) == null) {
+			return new ResponseEntity(
+					"Unable to update. A participant with login " + jsonParticipant.getLogin() + " does not exist.",
+					HttpStatus.NOT_FOUND);
+		}
+		// zapisac
+		Participant participant = participantService.findByLogin(jsonParticipant.getLogin());
+		participant.setPassword(jsonParticipant.getPassword());
+		participantService.update(participant);
+		// zwrocic
+		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
+	}
 }
