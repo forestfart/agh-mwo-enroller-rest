@@ -60,7 +60,6 @@ public class ParticipantRestController {
 	    return new ResponseEntity<Participant>(participant, HttpStatus.OK);
 	}
 
-
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateParticipantPassword(@RequestBody Participant jsonParticipant) {
 		// sprtawdzic czy istnieje
