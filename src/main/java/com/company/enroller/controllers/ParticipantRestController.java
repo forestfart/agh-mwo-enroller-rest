@@ -71,8 +71,8 @@ public class ParticipantRestController {
 		// zapisac
 		Participant participant = participantService.findByLogin(jsonParticipant.getLogin());
 		participant.setPassword(jsonParticipant.getPassword());
-		participantService.update(participant);
+		participantService.merge(participant);
 		// zwrocic
-		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
+		return new ResponseEntity<Participant>(participant, HttpStatus.ACCEPTED);
 	}
 }

@@ -4,16 +4,14 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collection;
 
 import com.google.gson.Gson;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +85,42 @@ public class ParticipantRestControllerTest {
 
 		// Then
 		mvc.perform(post("/participants").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8").content(jsonParticipant)).andExpect(status().isCreated());
+	}
+
+	@Test
+	public void testDeleteParticipant() throws Exception {
+		// Given
+		Participant participant = new Participant();
+		participant.setLogin("testLogin");
+		participant.setPassword("testPassword");
+
+		// When
+		given(participantService.findByLogin(participant.getLogin())).willReturn(participant);
+
+		// Then
+		mvc.perform(delete("/participants/testLogin").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void testUpdateParticipant() throws Exception {
+		// Given
+		Participant participant = new Participant();
+		participant.setLogin("testLogin");
+		participant.setPassword("testPassword");
+
+		Participant participantUpdate = new Participant();
+		participantUpdate.setLogin(participant.getLogin());
+		participantUpdate.setPassword("newPassword");
+
+		Gson gson = new Gson();
+		String jsonParticipantUpdate = gson.toJson(participantUpdate);
+
+		// When
+		given(participantService.findByLogin(participant.getLogin())).willReturn(participant);
+
+		// Then
+		mvc.perform(put("/participants").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8").content(jsonParticipantUpdate))
+				.andExpect(jsonPath("$.login", is(participant.getLogin()))).andExpect(jsonPath("$.password", is(participantUpdate.getPassword()))).andExpect(status().isAccepted());
+
 	}
 }

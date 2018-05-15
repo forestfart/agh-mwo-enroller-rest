@@ -36,9 +36,9 @@ public class ParticipantService {
 		transaction.commit();
 	}
 
-	public void update(Participant participant) {
+	public void merge(Participant participant) {
 		Transaction transaction = connector.getSession().beginTransaction();
-		connector.getSession().update(participant);
+		connector.getSession().merge(participant);
 		transaction.commit();
 	}
 }
