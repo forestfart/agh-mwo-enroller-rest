@@ -5,4 +5,6 @@
 
 CRUD application for excercising purposes - an other way of doing it..
 
-This app has been deployed at http://agh-mwo-enroller-rest.herokuapp.com/participants
+Endpoints:
+- http://agh-mwo-enroller-rest.herokuapp.com/participants
+- http://agh-mwo-enroller-rest.herokuapp.com/meetings
